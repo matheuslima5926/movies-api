@@ -3,7 +3,7 @@ import CreateMovieActorController from "./createMovieActor.controller";
 import CreateMovieDirectorController from "./createMovieDirector.controller";
 import CreateMovieGenreController from "./createMovieGenre.controller";
 import FindMovieController from "./findMovie.controller";
-import ListMOviesController from "./listMovies.controller";
+import ListMoviesController from "./listMovies.controller";
 
 export {
   CreateMovieController,
@@ -11,5 +11,5 @@ export {
   CreateMovieDirectorController,
   CreateMovieGenreController,
   FindMovieController,
-  ListMOviesController
+  ListMoviesController
 }
