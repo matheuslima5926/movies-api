@@ -23,7 +23,7 @@ export default class CreateGenreController {
       });
       return buildResponse(response, { body: classToClass(genre), statusCode: StatusCodes.CREATED })
     } catch (error) {
-      return buildResponse(response, {}, error);
+      return buildResponse(response, error);
     }
     
   }

@@ -3,4 +3,5 @@ export default interface ICreateUserDTO {
   email: string;
   role: string;
   password: string;
+  password_confirmation?: string;
 }

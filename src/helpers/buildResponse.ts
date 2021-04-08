@@ -22,12 +22,11 @@ export default (
           StatusCodes.INTERNAL_SERVER_ERROR
       )
       .json(
-        errors
+        errors || serviceResponse instanceof ApplicationError ||
+        serviceResponse instanceof Error
           ? {
-              message:
-                (serviceResponse as IServiceResponse).msg ||
-                (serviceResponse as ApplicationError).message,
-              errors,
+              errors: errors ? errors : (serviceResponse as IServiceResponse).msg ||
+              (serviceResponse as ApplicationError).message,
             }
           : {
               message:

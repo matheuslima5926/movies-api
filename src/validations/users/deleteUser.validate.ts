@@ -1,16 +1,15 @@
 import Joi from 'joi';
-import { CreateGenreDTO } from '../../dtos/genres';
 import { ApplicationError } from '../../utils';
 
-export default async ({ title }: CreateGenreDTO): Promise<void> => {
+export default async (id : string): Promise<void> => {
 
   try {
     const schema = Joi.object({
-      title: Joi.string().required(),
+      id: Joi.string().required().uuid(),
     });
   
     await schema.validateAsync({
-      title
+      id
     });
   } catch (error) {
     throw new ApplicationError(error.details);
