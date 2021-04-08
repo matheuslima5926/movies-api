@@ -5,15 +5,16 @@ import authConfig from '../../config/auth';
 import { ApplicationError } from '../../utils';
 import { User } from '../../models';
 import { IUsersRepository } from '../../repositories/interfaces';
+import { createSessionValidation } from '../../validations/users';
 
 interface IRequest {
-    email: string,
-    password: string
+  email: string,
+  password: string
 }
 
 interface IResponse {
-    user: User,
-    token: string
+  user: User,
+  token: string
 }
 
 class AuthenticateUserService {
@@ -21,6 +22,9 @@ class AuthenticateUserService {
         private usersRepository: IUsersRepository,
   ) { }
   public async execute({ email, password } : IRequest): Promise<IResponse> {
+
+    await createSessionValidation({ email, password });
+
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {

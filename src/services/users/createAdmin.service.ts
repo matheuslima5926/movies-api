@@ -3,21 +3,25 @@ import { hash } from 'bcryptjs';
 import { ApplicationError } from '../../utils';
 import { User } from '../../models';
 import { IUsersRepository } from '../../repositories/interfaces';
+import { createUserValidation } from '../../validations/users';
 
 interface IRequest {
-    name: string;
-    email: string;
-    password: string;
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
 }
 
 class CreateAdminService {
   constructor(
-        private usersRepository: IUsersRepository,
+    private usersRepository: IUsersRepository,
   ) { }
 
   public async execute({
-    name, email, password,
+    name, email, password, password_confirmation
   }: IRequest): Promise<User> {
+
+    await createUserValidation({ name, email, password, password_confirmation, role: 'admin' });
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {

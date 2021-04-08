@@ -1,5 +1,6 @@
 import {Movie} from '../../models';
-import { IMoviesRepository } from '../../repositories';
+import { IMoviesRepository } from '../../repositories/interfaces';
+import { createMovieValidation } from '../../validations/movies';
 
 interface IRequest {
     title: string;
@@ -17,6 +18,9 @@ class CreateMovieService {
   public async execute({
     title, original_title, release_year, rating, duration,
   }: IRequest): Promise<Movie> {
+
+    await createMovieValidation({title, original_title, release_year, rating, duration,})
+
     const movie = await this.moviesRepository.create({
       title, original_title, release_year, rating, duration,
     });

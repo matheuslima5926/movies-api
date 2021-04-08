@@ -1,6 +1,7 @@
 import { ApplicationError } from '../../utils';
 import {IGenresRepository, IMoviesGenresRepository, IMoviesRepository} from '../../repositories/interfaces';
 import {MovieGenre} from '../../models';
+import { createMovieGenreValidation } from '../../validations/movies';
 
 interface IRequest {
     movie_id: string;
@@ -18,6 +19,8 @@ class CreateMovieGenreService {
   public async execute({
     movie_id, genre_id,
   }: IRequest): Promise<MovieGenre> {
+
+    await createMovieGenreValidation({movie_id, genre_id,})
     const existsMovie = await this.moviesRepository.findById(movie_id);
 
     if (!existsMovie) {

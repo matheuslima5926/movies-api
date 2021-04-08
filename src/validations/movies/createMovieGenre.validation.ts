@@ -1,8 +1,8 @@
 import Joi from 'joi';
-import { CreateMovieActorDTO } from '../../dtos/movies';
+import { CreateMovieGenreDTO } from '../../dtos/movies';
 import { ApplicationError } from '../../utils';
 
-export default async ({ person_id, movie_id, }: CreateMovieActorDTO): Promise<void> => {
+export default async ({ genre_id, movie_id, }: CreateMovieGenreDTO): Promise<void> => {
 
   try {
     const schema = Joi.object({
@@ -11,7 +11,7 @@ export default async ({ person_id, movie_id, }: CreateMovieActorDTO): Promise<vo
     });
   
     await schema.validateAsync({
-      person_id, movie_id,
+      genre_id, movie_id,
     });
   } catch (error) {
     throw new ApplicationError(error.details);

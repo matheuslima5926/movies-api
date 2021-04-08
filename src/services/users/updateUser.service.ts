@@ -1,6 +1,7 @@
 import { ApplicationError } from '../../utils';
 import { User } from '../../models';
 import {IUsersRepository} from '../../repositories/interfaces';
+import { updateUserValidation } from '../../validations/users';
 
 interface IRequest {
     id: string;
@@ -16,6 +17,9 @@ class UpdateUserService {
   public async execute({
     id, name, email,
   }: IRequest): Promise<User> {
+
+    await updateUserValidation({ id, name, email });
+
     const checkUserExists = await this.usersRepository.findById(id);
 
     if (!checkUserExists) {

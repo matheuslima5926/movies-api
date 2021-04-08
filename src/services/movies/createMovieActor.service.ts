@@ -5,6 +5,7 @@ import {
   IMoviesRepository,
 } from "../../repositories/interfaces";
 import { ApplicationError } from "../../utils";
+import { createMoviePersonValidation } from "../../validations/movies";
 
 interface IRequest {
   movie_id: string;
@@ -19,6 +20,9 @@ class CreateMovieActorService {
   ) {}
 
   public async execute({ movie_id, person_id }: IRequest): Promise<MovieActor> {
+
+    await createMoviePersonValidation({ movie_id, person_id })
+
     const existsMovie = await this.moviesRepository.findById(movie_id);
 
     if (!existsMovie) {
