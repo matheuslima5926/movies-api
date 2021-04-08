@@ -25,8 +25,8 @@ export default (
         errors || serviceResponse instanceof ApplicationError ||
         serviceResponse instanceof Error
           ? {
-              errors: errors ? errors : (serviceResponse as IServiceResponse).msg ||
-              (serviceResponse as ApplicationError).message,
+              errors: errors ? errors : (serviceResponse as ApplicationError).message
+              ,
             }
           : {
               message:
