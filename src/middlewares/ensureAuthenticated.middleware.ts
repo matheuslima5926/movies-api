@@ -4,7 +4,7 @@ import { verify } from 'jsonwebtoken';
 import { StatusCodes } from "http-status-codes";
 
 import authConfig from '../config/auth';
-import { ApplicationError } from '../utils';
+import { ApplicationError, errors } from '../utils';
 
 interface ITokenPayload {
     iat: number,
@@ -18,7 +18,7 @@ export default function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new ApplicationError('JWT token is missing!', StatusCodes.UNAUTHORIZED);
+    throw new ApplicationError(errors.jwtTokenMissing, StatusCodes.UNAUTHORIZED);
   }
 
   const [, token] = authHeader.split(' ');
@@ -30,6 +30,6 @@ export default function ensureAuthenticated(
     };
     next();
   } catch (err) {
-    throw new ApplicationError('Invalid JWT Token', StatusCodes.UNAUTHORIZED);
+    throw new ApplicationError(errors.invalidToken, StatusCodes.UNAUTHORIZED);
   }
 }

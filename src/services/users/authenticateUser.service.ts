@@ -1,8 +1,9 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { StatusCodes } from "http-status-codes"
 
 import authConfig from '../../config/auth';
-import { ApplicationError } from '../../utils';
+import { ApplicationError, errors } from '../../utils';
 import { User } from '../../models';
 import { IUsersRepository } from '../../repositories/interfaces';
 import { createSessionValidation } from '../../validations/users';
@@ -28,13 +29,13 @@ class AuthenticateUserService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new ApplicationError('Invalid email and password combination', 401);
+      throw new ApplicationError(errors.notFound("users"), StatusCodes.NOT_FOUND);
     }
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      throw new ApplicationError('Invalid email and password combination', 401);
+      throw new ApplicationError(errors.invalidCombination, StatusCodes.BAD_REQUEST);
     }
 
     const { secret, expiresIn } = authConfig.jwt;

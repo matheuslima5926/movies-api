@@ -4,7 +4,7 @@ import { verify } from 'jsonwebtoken';
 import { StatusCodes } from "http-status-codes";
 
 import authConfig from '../config/auth';
-import {ApplicationError} from '../utils';
+import {ApplicationError, errors} from '../utils';
 import {UsersRepository} from '../repositories/implementations';
 
 interface ITokenPayload {
@@ -19,7 +19,7 @@ export default async function adminAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new ApplicationError('JWT token is missing!', StatusCodes.UNAUTHORIZED);
+    throw new ApplicationError(errors.jwtTokenMissing, StatusCodes.BAD_REQUEST);
   }
 
   const [, token] = authHeader.split(' ');
@@ -31,16 +31,16 @@ export default async function adminAuthenticated(
 
     if (user) {
       if (user.role !== 'admin') {
-        throw new ApplicationError('User without permission!', StatusCodes.UNAUTHORIZED);
+        throw new ApplicationError(errors.withoutPermission, StatusCodes.UNAUTHORIZED);
       }
       request.user = {
         id: sub,
       };
       next();
     } else {
-      throw new ApplicationError('User not found!', StatusCodes.UNAUTHORIZED);
+      throw new ApplicationError(errors.notFound("user"), StatusCodes.NOT_FOUND);
     }
   } catch (err) {
-    throw new ApplicationError('User without permission!', StatusCodes.UNAUTHORIZED);
+    throw new ApplicationError(errors.withoutPermission, StatusCodes.UNAUTHORIZED);
   }
 }

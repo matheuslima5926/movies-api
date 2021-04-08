@@ -1,7 +1,8 @@
-import { ApplicationError } from '../../utils';
+import { ApplicationError, errors } from '../../utils';
 import {Vote} from '../../models';
 import {IVotesRepository} from '../../repositories/interfaces';
 import { createVoteValidation } from '../../validations/votes';
+import { StatusCodes } from 'http-status-codes';
 
 interface IRequest {
     movie_id: string;
@@ -25,7 +26,7 @@ class CreateVoteService {
     );
 
     if (existsVoteinMovieByUser) {
-      throw new ApplicationError('User has already voted in this movie');
+      throw new ApplicationError(errors.alreadyExists("movie_vote_user"), StatusCodes.BAD_REQUEST);
     }
 
     const vote = await this.VotesRepository.create({

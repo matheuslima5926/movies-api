@@ -1,7 +1,8 @@
-import { ApplicationError } from '../../utils';
+import { ApplicationError, errors } from '../../utils';
 import {IGenresRepository, IMoviesGenresRepository, IMoviesRepository} from '../../repositories/interfaces';
 import {MovieGenre} from '../../models';
 import { createMovieGenreValidation } from '../../validations/movies';
+import { StatusCodes } from 'http-status-codes';
 
 interface IRequest {
     movie_id: string;
@@ -24,13 +25,13 @@ class CreateMovieGenreService {
     const existsMovie = await this.moviesRepository.findById(movie_id);
 
     if (!existsMovie) {
-      throw new ApplicationError('Movie not found!');
+      throw new ApplicationError(errors.notFound("movie"), StatusCodes.BAD_REQUEST);
     }
 
     const existsGenre = await this.genresRepository.findById(genre_id);
 
     if (!existsGenre) {
-      throw new ApplicationError('Genre not found!');
+      throw new ApplicationError(errors.notFound("genre"), StatusCodes.BAD_REQUEST);
     }
 
     const movieGenre = await this.moviesGenresRepository.create({

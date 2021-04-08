@@ -1,7 +1,8 @@
-import { ApplicationError } from '../../utils';
+import { ApplicationError, errors } from '../../utils';
 import { User } from '../../models';
 import {IUsersRepository} from '../../repositories/interfaces';
 import { deleteUserValidation } from '../../validations/users';
+import { StatusCodes } from 'http-status-codes';
 
 class DeleteAdminService {
   constructor(
@@ -15,7 +16,7 @@ class DeleteAdminService {
     const checkUserExists = await this.usersRepository.findById(id);
 
     if (!checkUserExists) {
-      throw new ApplicationError('Usuário not found');
+      throw new ApplicationError(errors.notFound("user"), StatusCodes.NOT_FOUND);
     }
 
     return this.usersRepository.delete(id);

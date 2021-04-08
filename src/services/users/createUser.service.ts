@@ -1,6 +1,6 @@
 import { hash } from 'bcryptjs';
 
-import { ApplicationError } from '../../utils';
+import { ApplicationError, errors } from '../../utils';
 import {User} from '../../models';
 import {IUsersRepository} from '../../repositories/interfaces';
 import { createUserValidation } from '../../validations/users';
@@ -26,7 +26,7 @@ class CreateUserService {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
-      throw new ApplicationError('User already exists');
+      throw new ApplicationError(errors.alreadyExists("user"));
     }
 
     const hashedPassword = await hash(password, 8);

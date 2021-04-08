@@ -1,10 +1,11 @@
+import { StatusCodes } from "http-status-codes";
 import { MovieActor } from "../../models";
 import {
   IPeopleRepository,
   IMoviesActorsRepository,
   IMoviesRepository,
 } from "../../repositories/interfaces";
-import { ApplicationError } from "../../utils";
+import { ApplicationError, errors } from "../../utils";
 import { createMoviePersonValidation } from "../../validations/movies";
 
 interface IRequest {
@@ -26,13 +27,13 @@ class CreateMovieActorService {
     const existsMovie = await this.moviesRepository.findById(movie_id);
 
     if (!existsMovie) {
-      throw new ApplicationError("Movie not found!");
+      throw new ApplicationError(errors.notFound("movie"), StatusCodes.BAD_REQUEST);
     }
 
     const existsPerson = await this.peopleRepository.findById(person_id);
 
     if (!existsPerson) {
-      throw new ApplicationError("Actor not found!");
+      throw new ApplicationError(errors.notFound("actor"), StatusCodes.BAD_REQUEST);
     }
 
     const movieActor = await this.moviesActorsRepository.create({
