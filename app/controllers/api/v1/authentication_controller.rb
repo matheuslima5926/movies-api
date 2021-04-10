@@ -1,10 +1,12 @@
 class Api::V1::AuthenticationController < ApplicationController
     def create
-        render json: {token: 'user_token123'}, status: :created
+        user = User.find_by(email: params[:email])
+        jwt = AuthenticationTokenService.call(user.id)
+        render json: {jwt: jwt}, status: :created
     end
 
     private
         def auth_params
-            params.require(:auth).permit(:username, :password)
+            params.require(:auth).permit(:email, :password)
         end
 end
