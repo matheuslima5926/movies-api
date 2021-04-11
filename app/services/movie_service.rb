@@ -6,4 +6,25 @@ class MovieService
         end
         return movie.errors.full_messages
     end
+
+    def self.search_movies(search_param)
+        query = "
+            SELECT 
+                m.id, 
+                m.original_title, 
+                m.director,
+                a.name,
+                m.gender 
+            FROM movies m
+            LEFT JOIN actor_movies am on am.movie_id = m.id
+            LEFT JOIN actors a on a.id = am.id
+            WHERE (
+                a.name ilike '%#{search_param}%'
+                or m.director ilike '%#{search_param}%'
+                or m.gender ilike '%#{search_param}%'
+                or m.original_title ilike '%#{search_param}%'
+            )
+        "
+        result_set = Movie.find_by_sql(query)
+    end
 end
