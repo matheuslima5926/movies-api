@@ -3,13 +3,11 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Authentications", type: :request do
   describe 'POST auth' do 
     let(:user) { FactoryBot.create(:user, email: "usr@email.com") }
-    it 'authenticate user with correct params' do
-      byebug
+    it 'return authentication token with correct params' do
         post '/api/v1/auth', params: {email: user.email, password: 'psdUser'}
-        expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)).to eq({
-          'token' => 'user_token123'
-        })
+        token = JSON.parse(response.body)['jwt']
+        decoded_token = JWT.decode(token, AuthenticationTokenService::HMAC_SECRET, true, {algorithm: AuthenticationTokenService::ALGORITHM_TYPE})
+      expect(decoded_token).to eq([{"user_id"=>user.id}, {"alg"=>AuthenticationTokenService::ALGORITHM_TYPE}])
     end
     it 'return authentication error when email is missing' do
       post '/api/v1/auth', params:  {password: 'psdUser'}
