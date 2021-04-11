@@ -22,7 +22,13 @@ RSpec.describe "Api::V1::Users", type: :request do
         end
     end
     context 'when params are incorrect' do
-      
+      before do 
+        post '/api/v1/users', params: {email: "default@email.com", password: nil}
+      end
+
+      it 'should return http_status unprocessable_entity' do
+        expect(response).to have_http_status(422)
+      end
     end
   end
 

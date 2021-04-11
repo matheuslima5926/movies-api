@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       post 'auth', to: 'authentication#create'
       resources :users, only: [:create] do 
         put '/' => 'users#update', on: :collection
+        delete '/' => 'users#delete', on: :collection
       end
     end
   end
