@@ -32,8 +32,8 @@ class Api::V1::AdminController < ApplicationController
             if @request[:id].present?
                 return render json: @request, status: :created
             end
-        rescue => exception 
-            render json: {errrors: @request}, status: :unprocessable_entity
+        rescue => exception
+            render json: {errors: @request}, status: :unprocessable_entity
         end
     end
 

@@ -122,7 +122,22 @@ RSpec.describe "Api::V1::Admins", type: :request do
     end
 
     context "when params are incorrect" do
-      
+      let (:admin) { FactoryBot.create(:user, admin: true) }
+      let (:admin_token) { AuthenticationTokenService.call(admin.id) }
+      let (:parsed_response) { JSON.parse(response.body) }
+      let (:movie) { FactoryBot.create(:movie) }
+
+       before do
+        post '/api/v1/admin/movies', params: {movie: {original_title: nil, release_date: nil, director: nil}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+      end
+
+      it 'Should return created HTTP status' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'should return the errors array' do
+        expect(parsed_response).to have_key("errors")
+      end
     end
   end
 end
