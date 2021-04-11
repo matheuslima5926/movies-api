@@ -33,7 +33,7 @@ class Api::V1::AdminController < ApplicationController
                 return render json: @request, status: :created
             end
         rescue => exception
-            render json: {errors: @request}, status: :unprocessable_entity
+            render json: {message: "check if the paylod is correct", errors: @request}, status: :unprocessable_entity
         end
     end
 
