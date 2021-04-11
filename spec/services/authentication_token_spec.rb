@@ -22,5 +22,14 @@ describe AuthenticationTokenService do
             token = JWT.encode(payload, AuthenticationTokenService::HMAC_SECRET, AuthenticationTokenService::ALGORITHM_TYPE)
             expect { AuthenticationTokenService.decode_token(token) }.to raise_exception
         end
+
+        it 'return user by valid token' do
+            user_by_token = AuthenticationTokenService.find_user_by_token(token)
+            expect(user_by_token.id).to eq(user.id)
+        end
+
+        it 'raise exception searching user by invalid token' do
+            expect { AuthenticationTokenService.find_user_by_token("invalidToken1234") }.to raise_exception
+        end
     end
 end
