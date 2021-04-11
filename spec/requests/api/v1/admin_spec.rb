@@ -89,6 +89,7 @@ RSpec.describe "Api::V1::Admins", type: :request do
       end
     end
   end
+
   describe 'DELETE /admin' do
     let(:user) { FactoryBot.create(:user, email: "defaultEmail@gmail.com", password:"randomPassword", admin: true) }
     let(:user_token) { AuthenticationTokenService.call(user.id) }
@@ -98,6 +99,12 @@ RSpec.describe "Api::V1::Admins", type: :request do
 
     it 'should return 204 http status' do
       expect(response).to have_http_status(204)
+    end
+  end
+
+  describe 'POST /admin/movies' do
+    context "when params are correct" do
+      
     end
   end
 end

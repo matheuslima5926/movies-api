@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         put '/' => 'admin#update', on: :collection
         delete '/' => 'admin#delete', on: :collection
         post '/movies' => 'admin#create_movie', on: :collection
-        put '/movies/:id' 'admin#edit_movie', on: :collection
+        put '/movies/:id' => 'admin#edit_movie', on: :collection
       end
     end
   end
