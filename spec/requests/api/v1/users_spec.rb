@@ -66,8 +66,8 @@ RSpec.describe "Api::V1::Users", type: :request do
       delete '/api/v1/users', headers: {"Authorization" => "Bearer #{user_token}"}
     end
 
-    it 'should return 200 http status' do
-      expect(response).to have_http_status(200)
+    it 'should return 204 http status' do
+      expect(response).to have_http_status(204)
     end
   end
 end

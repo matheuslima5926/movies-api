@@ -8,8 +8,8 @@ class UserService
             else
                 return user.errors.full_messages
             end
-        rescue => expection 
-            return expection
+        rescue => exception 
+            return exception
         end
     end
 
