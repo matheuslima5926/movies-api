@@ -21,6 +21,7 @@ class Api::V1::AdminController < ApplicationController
     end
 
     def delete
+        byebug
         return render json: {deleted: true}, status: :no_content if AdminService.inactive_admin(current_user)
         return render json: {}, status: :unprocessable_entity
     end
