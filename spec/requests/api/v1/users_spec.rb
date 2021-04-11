@@ -53,7 +53,7 @@ RSpec.describe "Api::V1::Users", type: :request do
         put '/api/v1/users', params: {email: nil, password: "12345678"}, headers: {"Authorization" => "Bearer #{user_token}"}
       end
 
-      it 'should return 200 http status' do
+      it 'should return 422 http status' do
         expect(response).to have_http_status(422)
       end
     end
