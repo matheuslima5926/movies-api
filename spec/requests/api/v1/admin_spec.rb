@@ -89,9 +89,7 @@ RSpec.describe "Api::V1::Admins", type: :request do
       end
     end
   end
-
-
-  describe 'DELETE users' do
+  describe 'DELETE /admin' do
     let(:user) { FactoryBot.create(:user, email: "defaultEmail@gmail.com", password:"randomPassword", admin: true) }
     let(:user_token) { AuthenticationTokenService.call(user.id) }
     before do
