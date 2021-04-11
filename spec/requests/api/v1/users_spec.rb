@@ -63,12 +63,10 @@ RSpec.describe "Api::V1::Users", type: :request do
     let(:user) { FactoryBot.create(:user, email: "defaultEmail@gmail.com", password:"12356134724578") }
     let(:user_token) { AuthenticationTokenService.call(user.id) }
     before do
-      byebug
       delete '/api/v1/users', headers: {"Authorization" => "Bearer #{user_token}"}
     end
 
     it 'should return 204 http status' do
-      byebug
       expect(response).to have_http_status(204)
     end
   end
