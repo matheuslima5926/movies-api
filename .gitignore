@@ -29,3 +29,5 @@
 *.env
 config/credentials.yml.enc
 .ruby-version
+key
+key.pub
