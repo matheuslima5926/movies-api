@@ -25,6 +25,18 @@ class Api::V1::AdminController < ApplicationController
         return render json: {}, status: :unprocessable_entity
     end
 
+
+    def create_movie
+        begin
+            @request = MovieService.create_movie(movie_params[:original_title], movie_params[:release_date], movie_params[:director])
+            if @request[:id].present?
+                return render json: @request, status: :created
+            end
+        rescue => exception 
+            render json: {errrors: @request}, status: :unprocessable_entity
+        end
+    end
+
     def check_admin
         return render json: {}, status: :unauthorized if !current_user.admin
     end
@@ -32,5 +44,9 @@ class Api::V1::AdminController < ApplicationController
     private
         def admin_params
             params.permit(:email, :password)
+        end
+
+        def movie_params
+            params.require(:movie).permit(:original_title, :release_date, :director)
         end
 end

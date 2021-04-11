@@ -104,6 +104,24 @@ RSpec.describe "Api::V1::Admins", type: :request do
 
   describe 'POST /admin/movies' do
     context "when params are correct" do
+      let (:admin) { FactoryBot.create(:user, admin: true) }
+      let (:admin_token) { AuthenticationTokenService.call(admin.id) }
+      let (:parsed_response) { JSON.parse(response.body) }
+      let (:movie) { FactoryBot.create(:movie) }
+
+       before do
+        post '/api/v1/admin/movies', params: {movie: {original_title: movie.original_title, release_date: movie.release_date, director: movie.director}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+      end
+
+      it 'Should return created movie data' do
+        expect(parsed_response).to have_key("id")
+      end
+      it 'Should return created HTTP status' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context "when params are incorrect" do
       
     end
   end
