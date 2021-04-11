@@ -110,7 +110,7 @@ RSpec.describe "Api::V1::Admins", type: :request do
       let (:movie) { FactoryBot.create(:movie) }
 
        before do
-        post '/api/v1/admin/movies', params: {movie: {original_title: movie.original_title, release_date: movie.release_date, director: movie.director}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+        post '/api/v1/admin/movies', params: {movie: {original_title: movie.original_title, release_date: movie.release_date, director: movie.director, gender: movie.gender}}, headers: {"Authorization" => "Bearer #{admin_token}"}
       end
 
       it 'Should return created movie data' do
@@ -128,7 +128,7 @@ RSpec.describe "Api::V1::Admins", type: :request do
       let (:movie) { FactoryBot.create(:movie) }
 
        before do
-        post '/api/v1/admin/movies', params: {movie: {original_title: nil, release_date: nil, director: nil}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+        post '/api/v1/admin/movies', params: {movie: {original_title: nil, release_date: nil, director: nil, gender: nil}}, headers: {"Authorization" => "Bearer #{admin_token}"}
       end
 
       it 'Should return created HTTP status' do
@@ -149,7 +149,7 @@ RSpec.describe "Api::V1::Admins", type: :request do
       let (:movie) { FactoryBot.create(:movie, original_title:"Movie name") }
 
        before do
-        put "/api/v1/admin/movies/#{movie.id}", params: {movie: {original_title: "Changed Movie name", director: "New Director"}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+        put "/api/v1/admin/movies/#{movie.id}", params: {movie: {original_title: "Changed Movie name", director: "New Director", gender: "Action"}}, headers: {"Authorization" => "Bearer #{admin_token}"}
         movie.reload
       end
 
@@ -160,6 +160,7 @@ RSpec.describe "Api::V1::Admins", type: :request do
       it 'should change movie data' do
         expect(movie.original_title).to eq("Changed Movie name")
         expect(movie.director).to eq("New Director")
+        expect(movie.gender).to eq("Action")
       end
 
       it 'Should return success HTTP status' do

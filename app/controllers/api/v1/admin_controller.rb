@@ -28,7 +28,7 @@ class Api::V1::AdminController < ApplicationController
 
     def create_movie
         begin
-            @request = MovieService.create_movie(movie_params[:original_title], movie_params[:release_date], movie_params[:director])
+            @request = MovieService.create_movie(movie_params[:original_title], movie_params[:release_date], movie_params[:director], movie_params[:gender])
             if @request[:id].present?
                 return render json: @request, status: :created
             end
@@ -55,6 +55,6 @@ class Api::V1::AdminController < ApplicationController
         end
 
         def movie_params
-            params.require(:movie).permit(:original_title, :release_date, :director)
+            params.require(:movie).permit(:original_title, :release_date, :director, :gender)
         end
 end
