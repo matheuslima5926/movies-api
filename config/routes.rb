@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
       resources :average_score, only: [:create]
 
+      resources :movies, only: [:index] do
+        get '/' => 'movies#detail'
+      end
+
       resources :admin, only: [] do
         post '/' => 'admin#create', on: :collection
         put '/' => 'admin#update', on: :collection

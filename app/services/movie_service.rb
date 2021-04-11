@@ -8,6 +8,7 @@ class MovieService
     end
 
     def self.search_movies(search_param)
+        return Movie.all.map { |movie| {id: movie.id, original_title: movie.original_title } } if search_param.blank?
         query = "
             SELECT 
                 m.id, 
@@ -26,5 +27,6 @@ class MovieService
             )
         "
         result_set = Movie.find_by_sql(query)
+        return result_set.map { |movie| { id: movie.id, original_title: movie.original_title } }
     end
 end
