@@ -139,6 +139,21 @@ RSpec.describe "Api::V1::Admins", type: :request do
         expect(parsed_response).to have_key("errors")
       end
     end
+
+    context "when user isn't admin" do
+      let (:admin) { FactoryBot.create(:user, admin: false) }
+      let (:admin_token) { AuthenticationTokenService.call(admin.id) }
+      let (:parsed_response) { JSON.parse(response.body) }
+      let (:movie) { FactoryBot.create(:movie, original_title:"Movie name") }
+
+      before do
+        post '/api/v1/admin/movies', params: {movie: {original_title: movie.original_title, release_date: movie.release_date, director: movie.director, gender: movie.gender}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+      end
+
+      it 'Should reject request with unauthorized' do
+        expect(response).to have_http_status(401)
+      end
+    end
   end
 
   describe 'PUT /admin/movies/:id' do
@@ -182,5 +197,21 @@ RSpec.describe "Api::V1::Admins", type: :request do
         expect(response).to have_http_status(422)
       end
     end
+
+    context "when user isn't admin" do
+      let (:admin) { FactoryBot.create(:user, admin: false) }
+      let (:admin_token) { AuthenticationTokenService.call(admin.id) }
+      let (:parsed_response) { JSON.parse(response.body) }
+      let (:movie) { FactoryBot.create(:movie, original_title:"Movie name") }
+
+       before do
+        put "/api/v1/admin/movies/#{movie.id}", params: {movie: {original_title: "Changed Movie name", director: "New Director", gender: "Action"}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+      end
+
+      it 'Should reject request with unauthorized' do
+        expect(response).to have_http_status(401)
+      end
+    end
   end
+  
 end
