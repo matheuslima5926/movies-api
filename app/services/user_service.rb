@@ -12,4 +12,9 @@ class UserService
             return expection
         end
     end
+
+    def self.inactive_user(user)
+        user.active = false
+        user.save
+    end
 end

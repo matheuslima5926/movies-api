@@ -20,6 +20,11 @@ class Api::V1::UsersController < ApplicationController
         end
     end
 
+    def delete
+        return render json: {deleted: true}, status: :no_content if UserService.inactive_user(current_user)
+        return render json: {}, status: :unprocessable_entity
+    end
+
     private
         def user_params
             params.permit(:email, :password)

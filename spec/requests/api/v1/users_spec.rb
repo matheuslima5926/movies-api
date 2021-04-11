@@ -58,4 +58,16 @@ RSpec.describe "Api::V1::Users", type: :request do
       end
     end
   end
+
+  describe 'DELETE users' do
+    let(:user) { FactoryBot.create(:user, email: "defaultEmail@gmail.com", password:"randomPassword") }
+    let(:user_token) { AuthenticationTokenService.call(user.id) }
+    before do
+      delete '/api/v1/users', headers: {"Authorization" => "Bearer #{user_token}"}
+    end
+
+    it 'should return 200 http status' do
+      expect(response).to have_http_status(200)
+    end
+  end
 end
