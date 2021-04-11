@@ -1,4 +1,6 @@
 class Api::V1::AuthenticationController < ApplicationController
+    skip_before_action :authenticate, only: [:create]
+
     def create
         user = User.find_by(email: auth_params[:email])
         jwt = "Bearer #{AuthenticationTokenService.call(user.id)}"

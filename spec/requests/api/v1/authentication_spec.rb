@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Authentications", type: :request do
   describe 'POST auth' do 
-    let(:user) { FactoryBot.create(:user, email: "usr@email.com") }
+    let(:user) { FactoryBot.create(:user, email: "usr@email.com", password: "psdUser") }
     it 'return authentication token with correct params' do
         post '/api/v1/auth', params: {email: user.email, password: 'psdUser'}
         token = JSON.parse(response.body)['jwt'].split(" ")[1]
