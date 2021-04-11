@@ -37,6 +37,14 @@ class Api::V1::AdminController < ApplicationController
         end
     end
 
+    def update_movie
+        @movie = Movie.find_by(id: params[:id])
+        if @movie.update(movie_params)
+            return render json: @movie.to_view, status: :ok
+        end
+        return render json: @movie.errors.full_messages, status: :unprocessable_entity
+    end
+
     def check_admin
         return render json: {}, status: :unauthorized if !current_user.admin
     end

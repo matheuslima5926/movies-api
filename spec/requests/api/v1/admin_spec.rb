@@ -140,4 +140,46 @@ RSpec.describe "Api::V1::Admins", type: :request do
       end
     end
   end
+
+  describe 'PUT /admin/movies/:id' do
+    context "when params are correct" do
+      let (:admin) { FactoryBot.create(:user, admin: true) }
+      let (:admin_token) { AuthenticationTokenService.call(admin.id) }
+      let (:parsed_response) { JSON.parse(response.body) }
+      let (:movie) { FactoryBot.create(:movie, original_title:"Movie name") }
+
+       before do
+        put "/api/v1/admin/movies/#{movie.id}", params: {movie: {original_title: "Changed Movie name", director: "New Director"}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+        movie.reload
+      end
+
+      it 'Should return change movie data' do
+        expect(parsed_response).to have_key("id")
+      end
+
+      it 'should change movie data' do
+        expect(movie.original_title).to eq("Changed Movie name")
+        expect(movie.director).to eq("New Director")
+      end
+
+      it 'Should return success HTTP status' do
+        expect(response).to have_http_status(200)
+      end
+    end
+    context "when params are incorrect" do
+      let (:admin) { FactoryBot.create(:user, admin: true) }
+      let (:admin_token) { AuthenticationTokenService.call(admin.id) }
+      let (:parsed_response) { JSON.parse(response.body) }
+      let (:movie) { FactoryBot.create(:movie, original_title:"Movie name") }
+
+       before do
+        put "/api/v1/admin/movies/#{movie.id}", params: {movie: {original_title: nil, director: "New Director"}}, headers: {"Authorization" => "Bearer #{admin_token}"}
+        movie.reload
+      end
+
+      it 'Should return unprocessable_entity HTTP status' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 end
