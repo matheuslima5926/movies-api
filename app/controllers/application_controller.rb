@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
     end
 
     def authenticate
-        render json: {}, status: :unauthorized unless current_user.present?
+        render json: {}, status: :unauthorized unless current_user.present? && current_user.active
     end
 
     def user_id_from_token

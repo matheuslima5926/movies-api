@@ -3,8 +3,11 @@ class Api::V1::AuthenticationController < ApplicationController
 
     def create
         user = User.find_by(email: auth_params[:email])
-        jwt = "Bearer #{AuthenticationTokenService.call(user.id)}"
-        render json: {jwt: jwt}, status: :created
+        if (user.present? && user.active)
+            jwt = "Bearer #{AuthenticationTokenService.call(user.id)}"
+            return render json: {jwt: jwt}, status: :created
+        end
+        return render json: {}, status: :unauthorized
     end
 
     private
