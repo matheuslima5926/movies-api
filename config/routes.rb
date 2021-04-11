@@ -10,9 +10,7 @@ Rails.application.routes.draw do
         delete '/' => 'users#delete', on: :collection
       end
 
-      resources :average_score, only: [:create] do
-        
-      end
+      resources :average_score, only: [:create]
 
       resources :admin, only: [] do
         post '/' => 'admin#create', on: :collection
