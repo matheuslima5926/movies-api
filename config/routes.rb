@@ -9,6 +9,11 @@ Rails.application.routes.draw do
         put '/' => 'users#update', on: :collection
         delete '/' => 'users#delete', on: :collection
       end
+
+      resources :average_score, only: [:create] do
+        
+      end
+
       resources :admin, only: [] do
         post '/' => 'admin#create', on: :collection
         put '/' => 'admin#update', on: :collection
