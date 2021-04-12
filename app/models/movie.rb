@@ -10,6 +10,6 @@ class Movie < ApplicationRecord
     def users_avg_score
         query = "select avg(score) users_avg_score from average_scores where movie_id = #{id}"
         result_set = ActiveRecord::Base.connection.exec_query(query)
-        return result_set.first["avg"].to_i
+        return result_set.first["users_avg_score"].to_i
     end
 end
