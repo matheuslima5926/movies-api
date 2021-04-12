@@ -8,7 +8,18 @@ class MovieService
             return movie.errors.full_messages
         rescue => ex
         end
+    end
 
+    def self.add_actor_to_movie_cast(movie_id, actor_id)
+        @movie = Movie.find_by(id: movie_id)
+        @actor = Actor.find_by(id: actor_id)
+        if @movie.present? && @actor.present?
+            @actor_movie = ActorMovie.create(movie_id: movie_id, actor_id: actor_id)
+            if @actor_movie.save
+                return true
+            end
+        end
+        return false
     end
 
     def self.search_movies(search_param)

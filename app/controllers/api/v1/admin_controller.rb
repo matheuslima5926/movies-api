@@ -45,6 +45,20 @@ class Api::V1::AdminController < ApplicationController
         return render json: @movie.errors.full_messages, status: :unprocessable_entity
     end
 
+    def create_actor
+        @actor = Actor.create(actor_params)    
+        if @actor.save
+            return render json: @actor.to_view, status: :created
+        end
+        return render json: {errors: @actor.errors.full_messages}, status: :unprocessable_entity
+    end
+
+    def include_actor_in_cast
+        @request = MovieService.add_actor_to_movie_cast(params[:movie_id],params[:actor_id])
+        return render json: {message: "success"}, status: :ok if @request
+        return render json: {message: "invalid movie or actor"}, status: :unprocessable_entity
+    end
+
     def check_admin
         return render json: {}, status: :unauthorized if !current_user.admin
     end
@@ -56,5 +70,13 @@ class Api::V1::AdminController < ApplicationController
 
         def movie_params
             params.require(:movie).permit(:original_title, :release_date, :director, :gender)
+        end
+
+        def actor_params
+            params.require(:actor).permit(:name)
+        end
+
+        def cast_params
+            params.permit(:actor_id, :movie_id)
         end
 end

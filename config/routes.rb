@@ -22,6 +22,8 @@ Rails.application.routes.draw do
         delete '/' => 'admin#delete', on: :collection
         post '/movies' => 'admin#create_movie', on: :collection
         put '/movies/:id' => 'admin#update_movie', on: :collection
+        post '/actors' => 'admin#create_actor', on: :collection
+        post '/cast' => 'admin#include_actor_in_cast', on: :collection
       end
     end
   end

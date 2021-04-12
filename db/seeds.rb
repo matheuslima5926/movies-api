@@ -5,7 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-    admin = User.create(email: "adm@movies-api.com", password: "@mySecretPassword_#45")
+    user  = User.create(email: "user@movies-api.com", password: "@mySecretPassword_#321", admin: false)    
+    admin = User.create(email: "adm@movies-api.com", password: "@mySecretPassword_#45", admin: true)
+
     movies = Movie.create([
         { original_title: "Lord of the Rings", director: "Peter Jackson", release_date: Date.parse("2001-01-01") },
         { original_title: "Avengers - End Game", director: "Russo Brothers", release_date: Date.parse("2019-12-23") },
