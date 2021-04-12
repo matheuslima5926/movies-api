@@ -46,11 +46,14 @@ class Api::V1::AdminController < ApplicationController
     end
 
     def create_actor
-        @actor = Actor.create(actor_params)    
-        if @actor.save
-            return render json: @actor.to_view, status: :created
+        begin
+            @actor = Actor.create(actor_params)    
+            if @actor.save
+                return render json: @actor.to_view, status: :created
+            end
+        rescue => ex
+            return render json: {errors: @actor.errors.full_messages}, status: :unprocessable_entity
         end
-        return render json: {errors: @actor.errors.full_messages}, status: :unprocessable_entity
     end
 
     def include_actor_in_cast
